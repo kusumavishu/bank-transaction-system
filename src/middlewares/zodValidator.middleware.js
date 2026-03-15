@@ -32,12 +32,21 @@ const zodValidator = (schema, source = "body") => {
       //   });
       // }
       if (err instanceof ZodError) {
+
+        const errors = {};
+         
+        err.issues.forEach((issue) => {
+          const field = issue.path[0]; // 👈 field name
+          errors[field] = issue.message;
+        });
+
         // ✅ Get first error only
         const firstError = err.issues[0];
 
         return res.status(400).json({
           success: false,
-          message: firstError.message, // ✅ direct message
+          message: firstError.message, 
+          errors,
         });
       }
 

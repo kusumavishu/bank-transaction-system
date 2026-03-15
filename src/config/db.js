@@ -37,4 +37,19 @@ async function connectDB() {
   });
 }
 
-module.exports = connectDB;
+module.exports = { connectDB };
+
+/**
+ * 1 st way
+ * require("./config/db.js").connectDB();
+ *
+ * if only
+ * Object { connectDB }	require().connectDB()
+ *
+ *
+ * 2nd way
+ * const connectDB = require("./config/db.js");
+ * connectDB();
+ *
+ * Function connectDB	require() directly
+ */

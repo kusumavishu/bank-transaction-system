@@ -5,9 +5,12 @@ const { userValidSchema } = require("./user.validation");
 
 const router = express.Router();
 
-router.post("/", zodValidator(userValidSchema), userController.createUser);
-
-router.get("/", zodValidator(userValidSchema), userController.getUsers);
+// router.get("/", userController.getUsers);
+router.post(
+  "/register",
+  zodValidator(userValidSchema),
+  userController.createUser
+);
 
 // router.get("/:id", userController.getUserById);
 

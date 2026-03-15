@@ -3,29 +3,55 @@ const User = require("./user.model");
 module.exports = {
   createUser: async (req, res, next) => {
     try {
-      // const user = await User.create(req.body);
+      const { name, email, password } = req.body;
 
-      res.status(201).json({
+      const existingUser = await User.findOne({ email });
+
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          errors: {
+            email: "Email already registered",
+          },
+        });
+      }
+
+      const user = await User.create({
+        name,
+        email,
+        password,
+      });
+
+      return res.status(201).json({
         success: true,
-        message: "DONE",
+        message: "User registered successfully 🎉",
+        data: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
       });
     } catch (error) {
-      next(error);
+      console.log("error",error)
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+      // return res.render("register", {
+      //   error: err.message,
+      // });
     }
   },
 
-  getUsers: async (req, res, next) => {
-    try {
-      // const users = await User.find();
-
-      res.json({
-        success: true,
-        message: "Siri Love you",
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
+  //all get
+  // getUsers: async (req, res, next) => {
+  //   try {
+  //     // const users = await User.find();
+  //     await res.render("register");
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
 
   getUserById: async (req, res, next) => {
     try {
